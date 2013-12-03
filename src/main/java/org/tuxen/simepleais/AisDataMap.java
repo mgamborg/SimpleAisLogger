@@ -14,7 +14,7 @@ public class AisDataMap extends LinkedHashMap<String, String> {
 	// "MMSI,Ship name,Call sign,imo number,Ship type,destination,Length,Breadth,maximum actual draught,cargo,Latitude,Longitude,Time stamp,SOG,COG,heading,nav status,Long,Lat,Time"
 	// .toLowerCase();
 
-	final static String keys = "MMSI,Ship name,Call sign,imo number,Ship type,destination,maximum actual draught,cargo,Latitude,Longitude,Time stamp,SOG,COG,heading,nav status,Long,Lat,Time,starboard,port,stern,bow"
+	final static String keys = "MMSI,Ship name,Call sign,imo number,Ship type,destination,maximum actual draught,cargo,Latitude,Longitude,Time stamp,SOG,COG,heading,nav status,rot,bow,stern,port,starboard,Time"
 			.toLowerCase();
 
 	public AisDataMap() {
