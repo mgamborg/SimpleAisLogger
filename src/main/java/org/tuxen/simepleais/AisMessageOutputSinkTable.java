@@ -43,7 +43,7 @@ public class AisMessageOutputSinkTable implements Consumer<AisPacket> {
 	private final PrintWriter fos;
 	private ConcurrentHashMap<Integer, AisTarget> reports;
     private final SimpleDateFormat filenameFormatter = new SimpleDateFormat(
-            "YYYY-MM-dd-HH:mm:ssZ".replace(" ", "_").replace(":","_"));
+          "YYYY-MM-dd-HH:mm:ssZ".replace(" ", "_").replace(":","_"));
     private final SimpleDateFormat dirNameFormatter = new SimpleDateFormat("YYYY-MM-dd");
     
     private final SimpleDateFormat timestampFormat = new SimpleDateFormat("YYYY-MM-dd-HH:mm:ssZ");
@@ -106,13 +106,16 @@ public class AisMessageOutputSinkTable implements Consumer<AisPacket> {
 			return;
 		}
 		
+
+		
 		long start = System.currentTimeMillis();
 
 		AisDataMap line = new AisDataMap();
 		AisTarget aisTarget = null;
 
 		line.put("time stamp", aisPacket.getBestTimestamp()/1000);
-		line.put("time", filenameFormatter.format(new Date(aisPacket.getBestTimestamp())));
+		//line.put("time", filenameFormatter.format(new Date(aisPacket.getBestTimestamp())));
+		line.put("time", timestampFormat.format(new Date(aisPacket.getBestTimestamp())));
 		line.put("mmsi", aisMessage.getUserId());
 
 		// Handle static reports for both class A and B vessels (msg 5 + 24)
@@ -150,6 +153,12 @@ public class AisMessageOutputSinkTable implements Consumer<AisPacket> {
 
 			Position pos = posMessage.getPos().getGeoLocation();
 			
+			
+			// Arealet som vi ønsker data fra
+				if (pos.getLatitude() < 54.07 || pos.getLatitude() > 55 || pos.getLongitude() < 10.2 || pos.getLongitude() > 12.36 ) {
+			return;
+		          }
+			
 			try {
 				line.put("latitude", pos.getLatitude());
 				line.put("longitude", pos.getLongitude());
@@ -158,11 +167,13 @@ public class AisMessageOutputSinkTable implements Consumer<AisPacket> {
 			}
 			
 			
-			line.put("lat", posMessage.getPos().getLatitudeDouble());
-			line.put("long", posMessage.getPos().getLongitudeDouble());
+			// line.put("lat", posMessage.getPos().getLatitudeDouble());
+			// line.put("long", posMessage.getPos().getLongitudeDouble());
 			line.put("heading", posMessage.getTrueHeading());
 		}
+		
 
+		
 		if (aisTarget == null) {
 			aisTarget = reports.get(aisMessage.getUserId());
 		}

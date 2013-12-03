@@ -37,7 +37,7 @@ public class RollingOutputSink extends Thread implements Consumer<AisPacket> {
 		this.start();
 
 	}
-
+	// Bestemmer hvor ofte ny file skal indlæsses
 	public RollingOutputSink() throws IOException {
 		this(new AisMessageOutputSinkTable(), 1, TimeUnit.HOURS);
 	}
